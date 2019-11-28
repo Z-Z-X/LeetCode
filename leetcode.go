@@ -12,8 +12,10 @@ import (
 )
 
 func main() {
-	var a=[][]int{{1,1},{0,0}}
-	fmt.Println(oddCells(2,2,a))
+	// var a=[][]int{{1,1},{0,0}}
+	// fmt.Println(oddCells(2,2,a))
+	romanToInt("III")
+
 }
 
 // LeetCode 1
@@ -1177,4 +1179,65 @@ func isPalindrome1(x int) bool {
 		j--
 	}
 	return true
+}
+
+// LeetCode 13
+// I             1
+// V             5
+// X             10
+// L             50
+// C             100
+// D             500
+// M             1000
+func romanToInt(s string) int {
+	var sum =0
+	for i:=len(s)-1;i>=0;i--{
+		switch string(s[i]) {
+		case "I":
+			sum+=1
+		case "V":
+			if i-1>=0 && string(s[i-1])=="I"{
+				sum+=4
+				i--
+			}else {
+				sum+=5
+			}
+		case "X":
+			if i-1>=0 && string(s[i-1])=="I"{
+				sum+=9
+				i--
+			}else {
+				sum+=10
+			}
+		case "L":
+			if i-1>=0 && string(s[i-1])=="X"{
+				sum+=40
+				i--
+			}else {
+				sum+=50
+			}
+		case "C":
+			if i-1>=0 && string(s[i-1])=="X"{
+				sum+=90
+				i--
+			}else {
+				sum+=100
+			}
+		case "D":
+			if i-1>=0 && string(s[i-1])=="C"{
+				sum+=400
+				i--
+			}else {
+				sum+=500
+			}
+		case "M":
+			if i-1>=0 && string(s[i-1])=="C"{
+				sum+=900
+				i--
+			}else {
+				sum+=1000
+			}
+		}
+	}
+	return sum
 }
