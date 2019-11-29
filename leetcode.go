@@ -14,8 +14,12 @@ import (
 func main() {
 	// var a=[][]int{{1,1},{0,0}}
 	// fmt.Println(oddCells(2,2,a))
-	romanToInt("III")
+	// romanToInt("III")
 
+	// var strs []string
+	// fmt.Println(longestCommonPrefix(strs))
+
+	fmt.Println(isValid("){"))
 }
 
 // LeetCode 1
@@ -1100,47 +1104,48 @@ func canThreePartsEqualSum(A []int) bool {
 	// 	sum1 += A[i+1]
 	// }
 	// return false
-	sum,avg:=0,0
-	sum1:=0
-	left,right:=len(A),0
-	for _,v:=range A{
-		sum+=v
+	sum, avg := 0, 0
+	sum1 := 0
+	left, right := len(A), 0
+	for _, v := range A {
+		sum += v
 	}
-	avg=sum/3
-	if sum%3!=0{
+	avg = sum / 3
+	if sum%3 != 0 {
 		return false
 	}
-	for i:=0;i<len(A)-2;i++{
-		sum1+=A[i]
-		if avg==sum1{
-			left=i
-			sum1=0
+	for i := 0; i < len(A)-2; i++ {
+		sum1 += A[i]
+		if avg == sum1 {
+			left = i
+			sum1 = 0
 			break
 		}
 	}
-	if left==len(A){
+	if left == len(A) {
 		return false
 	}
-	for i:=left+1;i<len(A);i++{
-		sum1+=A[i]
-		if avg==sum1{
-			right=i
+	for i := left + 1; i < len(A); i++ {
+		sum1 += A[i]
+		if avg == sum1 {
+			right = i
 			break
 		}
 	}
-	if left<right {
+	if left < right {
 		return true
 	}
 	return false
 }
+
 // Leetcode 1089
-func duplicateZeros(arr []int)  {
-	for i:=0;i<len(arr)-1;i++{
-		if arr[i]==0{
-			for j:=len(arr)-1;j>i+1;j--{
-				arr[j]=arr[j-1]
+func duplicateZeros(arr []int) {
+	for i := 0; i < len(arr)-1; i++ {
+		if arr[i] == 0 {
+			for j := len(arr) - 1; j > i+1; j-- {
+				arr[j] = arr[j-1]
 			}
-			arr[i+1]=0
+			arr[i+1] = 0
 			i++
 		}
 	}
@@ -1148,16 +1153,16 @@ func duplicateZeros(arr []int)  {
 
 // Leetcode 1252
 func oddCells(n int, m int, indices [][]int) int {
-	var rows=make([]int, n)
-	var cols=make([]int,m)
-	var res=0
+	var rows = make([]int, n)
+	var cols = make([]int, m)
+	var res = 0
 	for idx, _ := range indices {
 		rows[indices[idx][0]]++
 		cols[indices[idx][1]]++
 	}
-	for i:=0;i<n;i++{
-		for j:=0;j<m;j++{
-			if (rows[i]+cols[j])%2>0{
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			if (rows[i]+cols[j])%2 > 0 {
 				res++
 			}
 		}
@@ -1167,12 +1172,12 @@ func oddCells(n int, m int, indices [][]int) int {
 
 // Leetcode 9
 func isPalindrome1(x int) bool {
-	if x < 0{
+	if x < 0 {
 		return false
 	}
-	s:=strconv.Itoa(x)
-	for i,j:=0,len(s);i<j;{
-		if s[i]!=s[j]{
+	s := strconv.Itoa(x)
+	for i, j := 0, len(s); i < j; {
+		if s[i] != s[j] {
 			return false
 		}
 		i++
@@ -1190,54 +1195,117 @@ func isPalindrome1(x int) bool {
 // D             500
 // M             1000
 func romanToInt(s string) int {
-	var sum =0
-	for i:=len(s)-1;i>=0;i--{
+	var sum = 0
+	for i := len(s) - 1; i >= 0; i-- {
 		switch string(s[i]) {
 		case "I":
-			sum+=1
+			sum += 1
 		case "V":
-			if i-1>=0 && string(s[i-1])=="I"{
-				sum+=4
+			if i-1 >= 0 && string(s[i-1]) == "I" {
+				sum += 4
 				i--
-			}else {
-				sum+=5
+			} else {
+				sum += 5
 			}
 		case "X":
-			if i-1>=0 && string(s[i-1])=="I"{
-				sum+=9
+			if i-1 >= 0 && string(s[i-1]) == "I" {
+				sum += 9
 				i--
-			}else {
-				sum+=10
+			} else {
+				sum += 10
 			}
 		case "L":
-			if i-1>=0 && string(s[i-1])=="X"{
-				sum+=40
+			if i-1 >= 0 && string(s[i-1]) == "X" {
+				sum += 40
 				i--
-			}else {
-				sum+=50
+			} else {
+				sum += 50
 			}
 		case "C":
-			if i-1>=0 && string(s[i-1])=="X"{
-				sum+=90
+			if i-1 >= 0 && string(s[i-1]) == "X" {
+				sum += 90
 				i--
-			}else {
-				sum+=100
+			} else {
+				sum += 100
 			}
 		case "D":
-			if i-1>=0 && string(s[i-1])=="C"{
-				sum+=400
+			if i-1 >= 0 && string(s[i-1]) == "C" {
+				sum += 400
 				i--
-			}else {
-				sum+=500
+			} else {
+				sum += 500
 			}
 		case "M":
-			if i-1>=0 && string(s[i-1])=="C"{
-				sum+=900
+			if i-1 >= 0 && string(s[i-1]) == "C" {
+				sum += 900
 				i--
-			}else {
-				sum+=1000
+			} else {
+				sum += 1000
 			}
 		}
 	}
 	return sum
+}
+
+// leetcode 14
+func longestCommonPrefix(strs []string) string {
+	if len(strs) == 0 {
+		return ""
+	}
+	var maxStr = strs[0]
+	for i := 1; i < len(strs); i++ {
+		for idx, val := range maxStr {
+			if idx < len(strs[i]) {
+				if val != rune(strs[i][idx]) {
+					maxStr = maxStr[:idx]
+					break
+				}
+			} else {
+				maxStr = strs[i]
+				break
+			}
+		}
+	}
+	return maxStr
+}
+
+// leetcode 20
+func isValid(s string) bool {
+	if len(s)==0 {
+		return true
+	}
+	if len(s)%2!=0{
+		return false
+	}
+	var stack []string
+	for _,val:=range s{
+		stack = append(stack, string(val))
+		switch stack[len(stack)-1] {
+		case "}":
+			if len(stack)%2==1{
+				return false
+			}
+			if stack[len(stack)-2]=="{"{
+				stack=stack[:len(stack)-2]
+			}
+		case ")":
+			if len(stack)%2==1{
+				return false
+			}
+			if stack[len(stack)-2]=="("{
+				stack=stack[:len(stack)-2]
+			}
+		case "]":
+			if len(stack)%2==1{
+				return false
+			}
+			if stack[len(stack)-2]=="["{
+				stack=stack[:len(stack)-2]
+			}
+		}
+	}
+	if len(stack)!=0{
+		return false
+	}
+	return true
 }
