@@ -1269,7 +1269,7 @@ func longestCommonPrefix(strs []string) string {
 	return maxStr
 }
 
-// leetcode 20
+// leetcode 20 待解决
 func isValid(s string) bool {
 	if len(s)==0 {
 		return true
