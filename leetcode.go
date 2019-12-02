@@ -19,8 +19,10 @@ func main() {
 	// var strs []string
 	// fmt.Println(longestCommonPrefix(strs))
 
-	fmt.Println(isValid("){"))
+	// fmt.Println(isValid("){"))
+	fmt.Println(countAndSay(3))
 }
+
 
 // LeetCode 1
 func twoSum(nums []int, target int) []int {
@@ -1271,41 +1273,66 @@ func longestCommonPrefix(strs []string) string {
 
 // leetcode 20 待解决
 func isValid(s string) bool {
-	if len(s)==0 {
+	if len(s) == 0 {
 		return true
 	}
-	if len(s)%2!=0{
+	if len(s)%2 != 0 {
 		return false
 	}
 	var stack []string
-	for _,val:=range s{
+	for _, val := range s {
 		stack = append(stack, string(val))
 		switch stack[len(stack)-1] {
 		case "}":
-			if len(stack)%2==1{
+			if len(stack) < 2 {
 				return false
 			}
-			if stack[len(stack)-2]=="{"{
-				stack=stack[:len(stack)-2]
+			if stack[len(stack)-2] == "{" {
+				stack = stack[:len(stack)-2]
 			}
 		case ")":
-			if len(stack)%2==1{
+			if len(stack) < 2 {
 				return false
 			}
-			if stack[len(stack)-2]=="("{
-				stack=stack[:len(stack)-2]
+			if stack[len(stack)-2] == "(" {
+				stack = stack[:len(stack)-2]
 			}
 		case "]":
-			if len(stack)%2==1{
+			if len(stack) < 2 {
 				return false
 			}
-			if stack[len(stack)-2]=="["{
-				stack=stack[:len(stack)-2]
+			if stack[len(stack)-2] == "[" {
+				stack = stack[:len(stack)-2]
 			}
 		}
 	}
-	if len(stack)!=0{
+	if len(stack) != 0 {
 		return false
 	}
 	return true
+}
+
+// leetcode 38
+func countAndSay(n int) string {
+	if n == 1 {
+		return "1"
+	}
+	if n==2{
+		return "11"
+	}
+	var res string
+	str := countAndSay(n - 1)
+	var cnt = 1
+	var number = str[0]
+	for index := 1; index < len(str); index++ {
+		if str[index] == number {
+			cnt++
+		} else {
+			res += strconv.Itoa(cnt)
+			res += string(number)
+			number = str[index]
+			cnt = 1
+		}
+	}
+	return res
 }
