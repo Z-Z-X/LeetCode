@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -20,8 +21,10 @@ func main() {
 	// fmt.Println(longestCommonPrefix(strs))
 
 	// fmt.Println(isValid("){"))
-	fmt.Println(countAndSay(3))
+	// fmt.Println(countAndSay(6))
+	lengthOfLastWord("a   ")
 }
+
 
 
 // LeetCode 1
@@ -1334,5 +1337,21 @@ func countAndSay(n int) string {
 			cnt = 1
 		}
 	}
+	res += strconv.Itoa(cnt)
+	res += string(number)
 	return res
+}
+
+// leetcode 58
+func lengthOfLastWord(s string) int {
+	strs:=strings.Split(s," ")
+	if len(strs)==0{
+		return 0
+	}
+	for i:=len(strs)-1;i>=0 ;i--  {
+		if len(strs[i])!=0{
+			return len(strs[i])
+		}
+	}
+	return 0
 }
