@@ -7,9 +7,11 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 func main() {
@@ -22,10 +24,22 @@ func main() {
 
 	// fmt.Println(isValid("){"))
 	// fmt.Println(countAndSay(6))
-	lengthOfLastWord("a   ")
+	// lengthOfLastWord("a   ")
+
+	// fmt.Println(addBinary("11", "1"))
+	// fmt.Println(plusOne([]int{0}))
+	// var a = [][]int{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}
+	// rotate(a)
+	// a := []int{1, 2, 2, 1}
+	// b := []int{1}
+	// fmt.Println(intersect(a, b))
+
+	// strStr("mississippi", "issipi")
+
+	// fmt.Println(isPalindrome2(".,"))
+	// fmt.Println(myAtoi("+083472"))
+	fmt.Println(countPrimes(10))
 }
-
-
 
 // LeetCode 1
 func twoSum(nums []int, target int) []int {
@@ -52,8 +66,15 @@ func reverse(x int) int {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
 	y, _ := strconv.Atoi(string(runes))
+
 	if x < 0 {
+		if -y < math.MinInt32 {
+			return 0
+		}
 		return -y
+	}
+	if y > math.MaxInt32 {
+		return 0
 	}
 	return y
 }
@@ -222,6 +243,7 @@ func isPalindrome(head *ListNode) bool {
 
 	fast, slow := head, head
 
+	// 找到翻转中点
 	for fast != nil && fast.Next != nil {
 		fast = fast.Next.Next
 		slow = slow.Next
@@ -1320,7 +1342,7 @@ func countAndSay(n int) string {
 	if n == 1 {
 		return "1"
 	}
-	if n==2{
+	if n == 2 {
 		return "11"
 	}
 	var res string
@@ -1344,14 +1366,582 @@ func countAndSay(n int) string {
 
 // leetcode 58
 func lengthOfLastWord(s string) int {
-	strs:=strings.Split(s," ")
-	if len(strs)==0{
+	strs := strings.Split(s, " ")
+	if len(strs) == 0 {
 		return 0
 	}
-	for i:=len(strs)-1;i>=0 ;i--  {
-		if len(strs[i])!=0{
+	for i := len(strs) - 1; i >= 0; i-- {
+		if len(strs[i]) != 0 {
 			return len(strs[i])
 		}
 	}
 	return 0
+}
+
+// leetcode 67
+func addBinary(a string, b string) string {
+	var maxLen, subLen int
+	var carry = byte(0)
+	var res string
+	lenA := len(a)
+	lenB := len(b)
+	if lenA > lenB {
+		maxLen = lenA
+		subLen = lenA - lenB
+		b = strings.Repeat("0", subLen) + b
+		// for i := 0; i < subLen; i++ {
+		// 	b = "0" + b
+		// }
+	} else {
+		maxLen = lenB
+		subLen := lenB - lenA
+		a = strings.Repeat("0", subLen) + a
+		// for i := 0; i < subLen; i++ {
+		// 	a = "0" + a
+		// }
+	}
+
+	for i := maxLen - 1; i >= 0; i-- {
+		r := (a[i] - 48 + b[i] - 48 + carry) % 2
+		carry = (a[i] - 48 + b[i] - 48 + carry) / 2
+		res = strconv.Itoa(int(r)) + res
+	}
+	if carry != uint8(0) {
+		res = strconv.Itoa(int(carry)) + res
+	}
+	return res
+}
+
+// leetcode 771
+func numJewelsInStones(J string, S string) int {
+	var sum int
+	var m = make(map[byte]int)
+	for i, _ := range J {
+		m[J[i]] = 0
+	}
+	for i, _ := range S {
+		if _, ok := m[S[i]]; ok {
+			m[S[i]]++
+		}
+	}
+	for _, v := range m {
+		sum += v
+	}
+	return sum
+}
+
+func intersect(nums1 []int, nums2 []int) []int {
+	// 解法1 双循环遍历
+	/*
+		var res []int
+		var m =make([]bool,len(nums2))
+		for i:=0;i<len(nums1) ;i++  {
+			for j:=0;j<len(nums2);j++{
+				if nums1[i] ==nums2[j] && !m[j]{
+					res = append(res, nums2[j])
+					m[j]=true
+					break
+				}
+			}
+		}
+		return res
+	*/
+	// 解法2 map存储频数
+	var res []int
+	var m = make(map[int]int)
+	for _, i2 := range nums1 {
+		m[i2]++
+	}
+	for _, i2 := range nums2 {
+		if _, ok := m[i2]; ok && m[i2] > 0 {
+			res = append(res, i2)
+			m[i2]--
+		}
+	}
+	return res
+}
+
+// 加1
+func plusOne(digits []int) []int {
+	var inc = 1
+	for i := len(digits) - 1; i >= 0; i-- {
+		remain := (digits[i] + inc) % 10
+		if remain < digits[i] {
+			inc = 1
+		} else {
+			inc = 0
+		}
+		digits[i] = remain
+	}
+	if inc != 0 {
+		var res = make([]int, 0)
+		res = append(res, 1)
+		res = append(res, digits...)
+		return res
+	}
+	return digits
+}
+
+// 有效的数独
+func isValidSudoku(board [][]byte) bool {
+	var row = make([][]bool, 9)
+	var col = make([][]bool, 9)
+	var block = make([][]bool, 9)
+	for i := 0; i < 9; i++ {
+		row[i] = make([]bool, 9)
+		col[i] = make([]bool, 9)
+		block[i] = make([]bool, 9)
+	}
+	for i := 0; i < 9; i++ {
+		for j := 0; j < 9; j++ {
+			if board[i][j] != byte('.') {
+				number := board[i][j] - byte('1')
+				blockIndex := i/3*3 + j/3
+				if row[i][number] || col[j][number] || block[blockIndex][number] {
+					return false
+				}
+				row[i][number] = true
+				col[j][number] = true
+				block[blockIndex][number] = true
+			}
+		}
+	}
+	return true
+}
+
+// leetcode 48 旋转图像
+func rotate(matrix [][]int) {
+	for i := 0; i < len(matrix); i++ {
+		for j := i; j < len(matrix); j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+	for i := 0; i < len(matrix); i++ {
+		p := len(matrix) - 1
+		for j := 0; j < len(matrix)/2; j++ {
+			matrix[i][j], matrix[i][p] = matrix[i][p], matrix[i][j]
+			p--
+		}
+	}
+	fmt.Println(matrix)
+}
+
+// leetcode 387 字符串中的第一个唯一字符
+func firstUniqChar(s string) int {
+	var m = make(map[int32]int)
+	for _, val := range s {
+		m[val]++
+	}
+	for i, val := range s {
+		if m[val] == 1 {
+			return i
+		}
+	}
+	return -1
+}
+
+// leetcode 242 有效的字母异位词
+// 对两个字符串内容排序，比较，不相等就false
+// 使用map,将s的字符依次放入累计数量，t的字符减数量,不存在 false, 计数不为0false
+// 使用数组，而不是map
+func isAnagram(s string, t string) bool {
+	/*
+		var m = make(map[rune]int)
+		for _,v:=range s{
+			m[v]++
+		}
+		for _,v:=range t {
+			if _,ok:=m[v];ok{
+				m[v]--
+			}else{
+				return false
+			}
+		}
+		for _,v:=range m{
+			if v!=0{return false}
+		}
+		return true
+	*/
+	var m = make([]int, 26)
+	for _, v := range s {
+		m[v-'a']++
+	}
+	for _, v := range t {
+		m[v-'a']--
+	}
+	for _, v := range m {
+		if v != 0 {
+			return false
+		}
+	}
+	return true
+}
+
+func strStr(haystack string, needle string) int {
+
+	if len(needle) == 0 {
+		return 0
+	}
+	if len(haystack) < len(needle) {
+		return -1
+	}
+	for i := 0; i < len(haystack)-len(needle)+1; i++ {
+		if haystack[i] == needle[0] {
+			if haystack[i:i+len(needle)] == needle {
+				return i
+			}
+		}
+	}
+	return -1
+
+}
+
+// leetcode 125 验证回文字符串
+// 考虑头尾双指针
+func isPalindrome2(s string) bool {
+	/*
+		var ch1 ,ch2 byte
+		ch1=ch1&0xDF
+		ch2=ch2&0x20
+	*/
+	r := []rune(s)
+	var head, tail int
+	head, tail = 0, len(s)-1
+	for head < tail {
+		if !unicode.IsLetter(r[head]) && !unicode.IsDigit(r[head]) {
+			head++
+			continue
+		}
+		if !unicode.IsLetter(r[tail]) && !unicode.IsDigit(r[tail]) {
+			tail--
+			continue
+		}
+		if unicode.ToLower(r[head]) == unicode.ToLower(r[tail]) {
+			head++
+			tail--
+		} else {
+			return false
+		}
+	}
+	return true
+}
+
+// leetcode 字符串转换整数 (atoi)
+func myAtoi(str string) int {
+	var p int
+	str = strings.TrimSpace(str)
+	if len(str) < 1 || str[0] != '-' && str[0] != '+' && (str[0] < '0' || str[0] > '9') {
+		return 0
+	}
+	if str[0] == '-' {
+		if len(str) < 2 {
+			return 0
+		}
+		if str[1] < '0' || str[1] > '9' {
+			return 0
+		}
+	}
+	for i := 1; i < len(str); i++ {
+		if str[i] >= '0' && str[i] <= '9' {
+			p = i
+		} else {
+			p = i - 1
+			break
+		}
+	}
+	str = str[:p+1]
+	n, _ := strconv.Atoi(str)
+	if n > math.MaxInt32 {
+		return math.MaxInt32
+	}
+	if n < math.MinInt32 {
+		return math.MinInt32
+	}
+	return n
+}
+
+// leetcode142 环形链表II
+func detectCycle(head *ListNode) *ListNode {
+	var cycle bool
+	if head == nil {
+		return nil
+	}
+	pA := head.Next
+	if head.Next == nil {
+		return nil
+	}
+	pB := head.Next.Next
+	for pA != nil && pB != nil {
+		if pA.Val == pB.Val {
+			cycle = true
+			break
+		}
+		pA = pA.Next
+		if pB.Next == nil {
+			return nil
+		}
+		pB = pB.Next.Next
+	}
+
+	if cycle {
+		p := head
+		for p != nil && pA != nil {
+			if p == pA {
+				return p
+			}
+			p = p.Next
+			pA = pA.Next
+		}
+	}
+
+	return nil
+}
+
+// leetcode 19 删除链表的倒数第N个节点
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	var cnt = 0
+	p := head
+	for p != nil {
+		p = p.Next
+		cnt++
+	}
+	q := head
+	if cnt-n == 0 {
+		return head.Next
+	}
+	for i := 0; i < cnt-n-1; i++ {
+		if q.Next != nil {
+			q = q.Next
+		}
+	}
+	if q.Next.Next != nil {
+		q.Next = q.Next.Next
+	} else {
+		q.Next = nil
+	}
+
+	return head
+}
+
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
+// leetcode 二叉树的最大深度
+func maxDepth(root *TreeNode) int {
+	if root == nil {
+		return 0
+	}
+	var leftDepth, rightDepth = 1, 1
+	if root.Left != nil {
+		leftDepth += maxDepth(root.Left)
+	}
+	if root.Right != nil {
+		rightDepth += maxDepth(root.Right)
+	}
+	if rightDepth > leftDepth {
+		return rightDepth
+	}
+	return leftDepth
+}
+
+func isValidBST(root *TreeNode) bool {
+	return helper(root, math.MinInt64, math.MaxInt64)
+}
+func helper(root *TreeNode, lower, upper int) bool {
+	var lValid, rValid = true, true
+	if root == nil {
+		return true
+	}
+	if lower >= root.Val || upper <= root.Val {
+		return false
+	}
+	lValid = helper(root.Left, lower, root.Val)
+	rValid = helper(root.Right, root.Val, upper)
+	return lValid && rValid
+}
+
+// leetcode 101 对称二叉树
+func isSymmetric(root *TreeNode) bool {
+	return isMirror(root.Left, root.Right)
+}
+func isMirror(t1, t2 *TreeNode) bool {
+	if t1 == nil && t2 == nil {
+		return true
+	}
+	if t1 == nil || t2 == nil {
+		return false
+	}
+
+	return (t1.Val == t2.Val) && isMirror(t1.Left, t2.Right) && isMirror(t1.Right, t2.Left)
+
+}
+
+// leetcode 102 二叉树层次遍历
+func levelOrder(root *TreeNode) [][]int {
+
+	var res [][]int
+	var dfs func(root *TreeNode, level int)
+	dfs = func(root *TreeNode, level int) {
+		if root == nil {
+			return
+		}
+		if len(res) == level {
+			res = append(res, []int{})
+		}
+		res[level] = append(res[level], root.Val)
+
+		dfs(root.Left, level+1)
+		dfs(root.Right, level+1)
+	}
+	dfs(root, 0)
+	return res
+}
+
+// leetcode 108 将有序数组转换为二叉搜索树
+func sortedArrayToBST(nums []int) *TreeNode {
+	if len(nums) == 0 {
+		return nil
+	}
+	mid := len(nums) / 2
+	left := nums[:mid]
+	right := nums[mid+1:]
+	node := &TreeNode{
+		Val:   nums[mid],
+		Left:  sortedArrayToBST(left),
+		Right: sortedArrayToBST(right),
+	}
+	return node
+}
+
+// leetcode 爬楼梯
+func climbStairs(n int) int {
+	if n <= 2 {
+		return n
+	}
+	i1 := 1
+	i2 := 2
+	for i := 3; i <= n; i++ {
+		temp := i1 + i2
+		i1 = i2
+		i2 = temp
+	}
+	return i2
+}
+
+// leetcode 198
+func rob(nums []int) int {
+	dp := make([]int, len(nums)+1)
+	if len(nums) == 0 {
+		return 0
+	}
+	dp[0] = 0
+	dp[1] = nums[0]
+	for i := 2; i <= len(nums); i++ {
+		if dp[i-1] > dp[i-2]+nums[i-1] {
+			dp[i] = dp[i-1]
+		} else {
+			dp[i] = dp[i-2] + nums[i-1]
+		}
+	}
+	return dp[len(nums)]
+}
+
+// leetcode 412 fizz buzz
+func fizzBuzz(n int) []string {
+	var res []string
+	for i := 1; i <= n; i++ {
+		if i%3 == 0 && i%5 == 0 {
+			res = append(res, "FizzBuzz")
+			continue
+		}
+		if i%3 == 0 {
+			res = append(res, "Fizz")
+			continue
+		}
+		if i%5 == 0 {
+			res = append(res, "Buzz")
+			continue
+		}
+		res = append(res, strconv.Itoa(i))
+	}
+	return res
+}
+
+// leetcode 204 计数质数
+func countPrimes(n int) int {
+	/* 超时
+	var cnt int
+	var isPrime func(n int) bool
+	isPrime= func(n int) bool {
+		for i:=2;i*i<=n;i++{
+			if n%i==0{
+				return false
+			}
+		}
+		return true
+	}
+	for i:=2;i<n;i++ {
+		if isPrime(i){
+			cnt++
+		}
+	}
+	return cnt
+	*/
+	var count int
+	var signs = make([]bool, n)
+	for i := 2; i < n; i++ {
+		if !signs[i] {
+			count++
+			for j := i * 2; j < n; j += i {
+				signs[j] = true
+			}
+		}
+	}
+	return count
+}
+
+// leetcode
+func isPowerOfThree(n int) bool {
+	if n == 0 {
+		return false
+	}
+	var a, b = 0, n
+	for a == 0 {
+		a = b % 3
+		b = b / 3
+	}
+	if b == 0 && a == 1 {
+		return true
+	}
+	return false
+}
+
+// leetcode
+func hammingWeight(num uint32) int {
+	s := strconv.FormatUint(uint64(num), 2)
+	return strings.Count(s, "1")
+}
+
+// leetcode 461
+func hammingDistance(x int, y int) int {
+	t := x ^ y
+	var ans int
+	for t != 0 {
+		t &= t - 1
+		ans++
+	}
+	return ans
+}
+
+// leetcode
+func reverseBits(num uint32) uint32 {
+	var ret uint32
+	ret = 0
+	for i := 31; i >= 0; i-- {
+		ret = ret | (((num >> uint(31-i)) & 1) << uint(i))
+	}
+	return ret
 }

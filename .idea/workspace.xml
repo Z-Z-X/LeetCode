@@ -5,7 +5,6 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/leetcode.go" beforeDir="false" afterPath="$PROJECT_DIR$/leetcode.go" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +40,11 @@
   </component>
   <component name="ProjectId" id="1RUgAKTYZHOVVQsOkN4AUwVePUk" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
@@ -49,22 +53,10 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../go-examples/datastruct-go" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Go Build.go build leetcode.go">
     <configuration name="go build leetcode.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -134,13 +126,15 @@
     </recent_temporary>
   </component>
   <component name="ServiceViewManager">
-    <option name="allServicesViewState">
-      <serviceView>
-        <treeState>
-          <expand />
-          <select />
-        </treeState>
-      </serviceView>
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
     </option>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -162,5 +156,62 @@
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
     <proxy>direct</proxy>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="743" y="298" width="426" height="483" key="FileChooserDialogImpl" timestamp="1577181322657">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="743" y="298" width="426" height="483" key="FileChooserDialogImpl/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577181322657" />
+    <state width="1872" height="255" key="GridCell.Tab.0.bottom" timestamp="1577341426728">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="255" key="GridCell.Tab.0.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577341426728" />
+    <state width="1872" height="255" key="GridCell.Tab.0.center" timestamp="1577341426728">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="255" key="GridCell.Tab.0.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577341426728" />
+    <state width="1872" height="255" key="GridCell.Tab.0.left" timestamp="1577341426727">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="255" key="GridCell.Tab.0.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577341426727" />
+    <state width="1872" height="255" key="GridCell.Tab.0.right" timestamp="1577341426728">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="255" key="GridCell.Tab.0.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577341426728" />
+    <state width="1872" height="329" key="GridCell.Tab.1.bottom" timestamp="1577339326927">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="329" key="GridCell.Tab.1.bottom/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577339326927" />
+    <state width="1872" height="329" key="GridCell.Tab.1.center" timestamp="1577339326926">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="329" key="GridCell.Tab.1.center/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577339326926" />
+    <state width="1872" height="329" key="GridCell.Tab.1.left" timestamp="1577339326926">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="329" key="GridCell.Tab.1.left/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577339326926" />
+    <state width="1872" height="329" key="GridCell.Tab.1.right" timestamp="1577339326927">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1872" height="329" key="GridCell.Tab.1.right/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1577339326927" />
+    <state x="539" y="141" width="834" height="797" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1576662953556">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="539" y="141" width="834" height="797" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1576662953556" />
+    <state x="507" y="279" width="897" height="521" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1576813359958">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="507" y="279" width="897" height="521" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1920.1080/1920.0.1920.1080@0.0.1920.1080" timestamp="1576813359958" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/leetcode.go</url>
+          <line>40</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
