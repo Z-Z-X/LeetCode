@@ -38,7 +38,9 @@ func main() {
 
 	// fmt.Println(isPalindrome2(".,"))
 	// fmt.Println(myAtoi("+083472"))
-	fmt.Println(countPrimes(10))
+	// fmt.Println(countPrimes(10))
+	var a = [][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}
+	fmt.Println(searchMatrix(a, 5))
 }
 
 // LeetCode 1
@@ -1944,4 +1946,67 @@ func reverseBits(num uint32) uint32 {
 		ret = ret | (((num >> uint(31-i)) & 1) << uint(i))
 	}
 	return ret
+}
+
+// leetcode 搜索二维矩阵II
+func searchMatrix(matrix [][]int, target int) bool {
+	if len(matrix) == 0 || len(matrix[0]) == 0 || target < matrix[0][0] || target > matrix[len(matrix)-1][len(matrix[0])-1] {
+		return false
+	}
+	var maxRow, maxCol = len(matrix), len(matrix[0])
+	for i := len(matrix) - 1; i >= 0; i-- {
+		if matrix[i][0] < target {
+			maxRow = i
+			break
+		} else if matrix[i][0] == target {
+			return true
+		}
+
+	}
+	for j := len(matrix[0]) - 1; j >= 0; j-- {
+		if matrix[0][j] < target {
+			maxCol = j
+			break
+		} else if matrix[0][j] == target {
+			return true
+		}
+	}
+	for i := 0; i <= maxRow; i++ {
+		for j := 0; j <= maxCol; j++ {
+			if matrix[i][j] == target {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func maxProduct(nums []int) int {
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	minMulti := 1
+	maxMulti := 1
+	max := math.MinInt64
+	for i := 0; i < len(nums); i++ {
+		if nums[i] < 0 {
+			temp := maxMulti
+			maxMulti = minMulti
+			minMulti = temp
+		}
+		if maxMulti*nums[i] > nums[i] {
+			maxMulti = maxMulti * nums[i]
+		} else {
+			maxMulti = nums[i]
+		}
+		if minMulti*nums[i] < nums[i] {
+			minMulti = minMulti * nums[i]
+		} else {
+			minMulti = nums[i]
+		}
+		if maxMulti > max {
+			max = maxMulti
+		}
+	}
+	return max
 }
