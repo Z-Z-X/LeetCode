@@ -39,8 +39,12 @@ func main() {
 	// fmt.Println(isPalindrome2(".,"))
 	// fmt.Println(myAtoi("+083472"))
 	// fmt.Println(countPrimes(10))
-	var a = [][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}
-	fmt.Println(searchMatrix(a, 5))
+	// var a = [][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}, {3, 6, 9, 16, 22}, {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30}}
+	// fmt.Println(searchMatrix(a, 5))
+	// var a = []int{1, 3, -1, -3, 5, 3, 6, 7}
+	// maxSlidingWindow(a, 3)
+
+	numSquares(12)
 }
 
 // LeetCode 1
@@ -2009,4 +2013,181 @@ func maxProduct(nums []int) int {
 		}
 	}
 	return max
+}
+
+func productExceptSelf(nums []int) []int {
+	var res = make([]int, len(nums))
+	k := 1
+	for i := 0; i < len(nums); i++ {
+		res[i] = k
+		k = k * nums[i]
+	}
+	k = 1
+	for j := len(nums) - 1; j >= 0; j-- {
+		res[j] *= k
+		k = k * nums[j]
+	}
+	return res
+}
+
+// leetcode 334 递增的三元子序列
+func increasingTriplet(nums []int) bool {
+	if len(nums) < 3 {
+		return false
+	}
+	var min = nums[0]
+	var mid = math.MaxInt32
+	for i := 1; i < len(nums); i++ {
+		if nums[i] > min && nums[i] < mid {
+			mid = nums[i]
+			continue
+		}
+		if nums[i] > mid {
+			return true
+		}
+		if nums[i] < min {
+			min = nums[i]
+			continue
+		}
+	}
+	return false
+}
+
+// leetcode 数组中的第K个最大元素
+func findKthLargest(nums []int, k int) int {
+	sort.Ints(nums)
+	return nums[len(nums)-k]
+}
+
+func maxSlidingWindow(nums []int, k int) []int {
+	if len(nums) == 0 {
+		return nil
+	}
+	var res []int
+	var left = make([]int, len(nums))
+	left[0] = nums[0]
+	var right = make([]int, len(nums))
+	right[len(nums)-1] = nums[len(nums)-1]
+	for i := 1; i < len(nums); i++ {
+		if i%k == 0 {
+			left[i] = nums[i]
+		} else {
+			left[i] = IntMax(nums[i], left[i-1])
+		}
+
+		j := len(nums) - i - 1
+		if (j+1)%k == 0 {
+			right[j] = nums[j]
+		} else {
+			right[j] = IntMax(right[j+1], nums[j])
+		}
+	}
+	for i := 0; i < len(nums)-k+1; i++ {
+		res = append(res, IntMax(left[i-1+k], right[i]))
+	}
+	return res
+}
+
+func IntMax(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+// leetcode 有序矩阵中第K小的元素
+func kthSmallest(matrix [][]int, k int) int {
+	if len(matrix) == 0 {
+		return 0
+	}
+	var f func(n int) int
+	f = func(n int) int {
+		var count int
+		var row, col = len(matrix) - 1, 0
+		for row >= 0 && col < len(matrix) {
+			if matrix[row][col] <= n {
+				count += row + 1
+				col++
+			} else {
+				row--
+			}
+		}
+		return count
+	}
+	var left, right = matrix[0][0], matrix[len(matrix)-1][len(matrix)-1]
+	for left < right {
+		mid := left + (right-left)/2
+		if f(mid) < k {
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+	return left
+}
+
+// leetcode 完全平方数
+func numSquares(n int) int {
+	// 首先想到的递归方法，结果当然是超时了
+	// 但是可以从这里推导出动态规划方法
+	// 从1开始将每次最小次数保存，直到n,
+	/*
+		var min = n
+		var tempRes = 0
+		if n<=3{
+			return n
+		}
+		for i := 1; i*i <= n; i++ {
+			if i*i == n {
+				return 1
+			}
+			tempRes = numSquares(n - i*i)+1
+			if min > tempRes {
+				min = tempRes
+			}
+		}
+		return min
+	*/
+
+	// 动态规划
+	if n <= 3 {
+		return n
+	}
+	var dp = make([]int, n+1)
+	dp[1] = 1
+	dp[2] = 2
+	dp[3] = 3
+	for i := 4; i <= n; i++ {
+		dp[i] = i
+		for j := 1; i-j*j >= 0; j++ {
+			dp[i] = IntMin(dp[i], dp[i-j*j]+1)
+		}
+	}
+	return dp[n]
+}
+
+func IntMin(a, b int) int {
+	if a > b {
+		return b
+	}
+	return a
+}
+
+// leetcode 零钱兑换
+func coinChange(coins []int, amount int) int {
+	var dp = make([]int, amount+1)
+	dp[0] = 0
+	for i := 1; i <= amount; i++ {
+		dp[i] = amount + 1
+		for j := 0; j < len(coins); j++ {
+			if i >= coins[j] {
+				dp[i] = IntMin(dp[i], dp[i-coins[j]]+1)
+			}
+		}
+	}
+	// 未找到组合
+	if dp[amount] > amount {
+		return -1
+	}
+	return dp[amount]
 }
